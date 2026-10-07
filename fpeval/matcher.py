@@ -12,7 +12,12 @@ Pipeline per comparison:
    with it. Random descriptor coincidences between different fingers rarely
    agree on one global transform, so inlier counts separate genuine from
    impostor pairs far better than raw match counts.
-4. Score = inliers / min(#keypoints_a, #keypoints_b), clipped to [0, 1].
+4. Score = inliers / (inliers + K): a saturating map of the inlier count
+   into [0, 1). K is the inlier count that scores exactly 0.5.
+
+   Dividing by #keypoints instead was tried first; it made the score depend
+   on how textured/noisy each image is rather than on how much of the print
+   actually agrees, and gave a slightly worse EER.
 """
 
 from __future__ import annotations
@@ -44,9 +49,10 @@ class KeypointMatcher:
     name = "base"
     norm = cv2.NORM_L2
 
-    def __init__(self, ratio: float = 0.8, ransac_px: float = 8.0):
+    def __init__(self, ratio: float = 0.8, ransac_px: float = 8.0, half_score_inliers: float = 20.0):
         self.ratio = ratio
         self.ransac_px = ransac_px
+        self.k = half_score_inliers
         self._bf = cv2.BFMatcher(self.norm)
 
     def _detector(self):
@@ -95,10 +101,8 @@ class KeypointMatcher:
         return int(inlier_mask.sum())
 
     def score(self, fa: Features, fb: Features) -> float:
-        denom = min(len(fa.keypoints), len(fb.keypoints))
-        if denom == 0:
-            return 0.0
-        return float(min(self.inliers(fa, fb) / denom, 1.0))
+        n = self.inliers(fa, fb)
+        return n / (n + self.k)
 
 
 class SiftMatcher(KeypointMatcher):
@@ -115,7 +119,7 @@ class SiftMatcher(KeypointMatcher):
     def describe(self) -> str:
         return (f"SIFT keypoints (masked, CLAHE-enhanced) + Lowe ratio test ({self.ratio}) + "
                 f"RANSAC similarity-transform verification ({self.ransac_px}px); "
-                f"score = inliers / min(#keypoints)")
+                f"score = inliers / (inliers + {self.k:g})")
 
 
 class OrbMatcher(KeypointMatcher):
@@ -133,7 +137,7 @@ class OrbMatcher(KeypointMatcher):
     def describe(self) -> str:
         return (f"ORB keypoints (masked, CLAHE-enhanced) + Lowe ratio test ({self.ratio}) + "
                 f"RANSAC similarity-transform verification ({self.ransac_px}px); "
-                f"score = inliers / min(#keypoints)")
+                f"score = inliers / (inliers + {self.k:g})")
 
 
 MATCHERS = {"sift": SiftMatcher, "orb": OrbMatcher}

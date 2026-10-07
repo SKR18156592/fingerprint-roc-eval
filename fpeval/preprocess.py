@@ -58,7 +58,7 @@ def foreground_mask(img: np.ndarray, block: int = 16, rel_threshold: float = 0.1
     return mask
 
 
-def preprocess(path: str, scale: float = 3.0) -> Preprocessed:
+def preprocess(path: str, scale: float = 2.0) -> Preprocessed:
     img = upscale(load_gray(path), scale)
     img = enhance(img)
     return Preprocessed(image=img, mask=foreground_mask(img))
