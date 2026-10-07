@@ -74,7 +74,13 @@ def equal_error_rate(genuine, impostor) -> EerResult:
     threshold and the previous one, which gives a stable estimate even when
     the empirical curves are step functions.
     """
-    roc = roc_curve(genuine, impostor)
+    g, i = _as_array(genuine), _as_array(impostor)
+    if g.min() > i.max():
+        # Perfect separation: every threshold in the gap gives FAR = FRR = 0.
+        # Return the middle of the gap (maximum margin), not its edge.
+        return EerResult(eer=0.0, threshold=float((g.min() + i.max()) / 2))
+
+    roc = roc_curve(g, i)
     diff = roc.far - roc.frr
     k = int(np.argmax(diff <= 0))  # first index with FAR <= FRR
 
