@@ -1,0 +1,25 @@
+=== ROC Analysis Results ===
+Matcher:              ORB keypoints (masked, CLAHE-enhanced) + Lowe ratio test (0.8) + RANSAC similarity-transform verification (8.0px); score = inliers / (inliers + 20)
+Genuine pairs:        1000
+Impostor pairs:       123750
+EER:                  1.09%   (threshold = 0.271)
+TAR @ FAR = 1%:       98.8%   (threshold = 0.286)
+TAR @ FAR = 0.1%:     93.2%   (threshold = 0.459)
+TAR @ FAR = 0.01%:    78.8%   (threshold = 0.623)
+Smallest measurable FAR: 0.0008%  (1/123750)
+Reliable FAR floor:      0.0081%  (~10 errors needed)
+EER threshold:           0.271
+Recommended threshold:   0.623  (lowest threshold with FAR <= 0.01%; TAR = 78.8%, FRR = 21.2%)
+
+Threshold | TAR (%)  | FAR (%)  | FRR (%)  | Notes
+----------|----------|----------|----------|------------------
+  0.20    |   99.50  |   17.34  |    0.50  | Too permissive
+  EER pt  |   98.80  |    0.61  |    1.20  | <- EER (t = 0.271)
+  0.30    |   98.10  |    0.39  |    1.90  | 
+  0.40    |   95.20  |    0.16  |    4.80  | (hand-picked baseline)
+  0.50    |   90.80  |    0.06  |    9.20  | 
+  0.60    |   81.40  |    0.01  |   18.60  | 
+  0.70    |   66.10  |    0.00  |   33.90  | 
+  0.80    |   34.70  |    0.00  |   65.30  | Too restrictive
+
+Saved plots + summary.json -> results/experiments/orb_100x5_cross/

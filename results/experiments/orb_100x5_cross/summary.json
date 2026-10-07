@@ -1,0 +1,120 @@
+{
+  "n_genuine": 1000,
+  "n_impostor": 123750,
+  "eer": 0.01091872011769033,
+  "eer_threshold": 0.27141137035674884,
+  "operating_points": [
+    {
+      "target_far": 0.01,
+      "tar": 0.988,
+      "far": 0.0060606060606061,
+      "threshold": 0.285714,
+      "resolvable": true
+    },
+    {
+      "target_far": 0.001,
+      "tar": 0.9319999999999999,
+      "far": 0.0009292929292928909,
+      "threshold": 0.459459,
+      "resolvable": true
+    },
+    {
+      "target_far": 0.0001,
+      "tar": 0.788,
+      "far": 9.696969696970648e-05,
+      "threshold": 0.622642,
+      "resolvable": true
+    }
+  ],
+  "far_resolution": {
+    "smallest_nonzero": 8.08080808080808e-06,
+    "rule_of_three_95": 2.4242424242424244e-05,
+    "reliable_floor": 8.080808080808081e-05
+  },
+  "recommended": {
+    "threshold": 0.622642,
+    "basis": "FAR <= 0.0001"
+  },
+  "genuine_stats": {
+    "mean": 0.7153309440000001,
+    "std": 0.14952929170096027,
+    "min": 0.0,
+    "max": 0.929078
+  },
+  "impostor_stats": {
+    "mean": 0.050886251224242424,
+    "std": 0.0892036339480244,
+    "min": 0.0,
+    "max": 0.74026
+  },
+  "overlap": {
+    "genuine_below_max_impostor": 0.45,
+    "impostor_above_min_genuine": 1.0
+  },
+  "threshold_table": [
+    {
+      "label": "0.20",
+      "threshold": 0.2,
+      "tar": 0.995,
+      "far": 0.17335757575757577,
+      "frr": 0.005,
+      "note": "Too permissive"
+    },
+    {
+      "label": "EER pt",
+      "threshold": 0.27141137035674884,
+      "tar": 0.988,
+      "far": 0.006060606060606061,
+      "frr": 0.012,
+      "note": "<- EER (t = 0.271)"
+    },
+    {
+      "label": "0.30",
+      "threshold": 0.3,
+      "tar": 0.981,
+      "far": 0.003935353535353536,
+      "frr": 0.019,
+      "note": ""
+    },
+    {
+      "label": "0.40",
+      "threshold": 0.4,
+      "tar": 0.952,
+      "far": 0.0015757575757575758,
+      "frr": 0.048,
+      "note": "(hand-picked baseline)"
+    },
+    {
+      "label": "0.50",
+      "threshold": 0.5,
+      "tar": 0.908,
+      "far": 0.0006303030303030303,
+      "frr": 0.092,
+      "note": ""
+    },
+    {
+      "label": "0.60",
+      "threshold": 0.6,
+      "tar": 0.8140000000000001,
+      "far": 0.0001292929292929293,
+      "frr": 0.186,
+      "note": ""
+    },
+    {
+      "label": "0.70",
+      "threshold": 0.7,
+      "tar": 0.661,
+      "far": 2.4242424242424244e-05,
+      "frr": 0.339,
+      "note": ""
+    },
+    {
+      "label": "0.80",
+      "threshold": 0.8,
+      "tar": 0.347,
+      "far": 0.0,
+      "frr": 0.653,
+      "note": "Too restrictive"
+    }
+  ]
+}
