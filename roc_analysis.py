@@ -33,11 +33,13 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--out-dir", default="results")
     p.add_argument("--thresholds", type=float, nargs="+", default=list(DEFAULT_TABLE),
                    help="thresholds for the sensitivity table")
+    p.add_argument("--target-far", type=float, default=0.0001,
+                   help="FAR the production threshold must meet (default 0.01%%)")
     return p.parse_args()
 
 
 def pct(x: float) -> str:
-    return f"{100 * x:5.1f}"
+    return f"{100 * x:6.2f}"
 
 
 def row_note(t: float, far: float, frr: float) -> str:
@@ -64,8 +66,8 @@ def threshold_table(genuine, impostor, thresholds, eer) -> list[dict]:
 
 
 def print_table(rows) -> None:
-    print("\nThreshold | TAR (%) | FAR (%) | FRR (%) | Notes")
-    print("----------|---------|---------|---------|------------------")
+    print("\nThreshold | TAR (%)  | FAR (%)  | FRR (%)  | Notes")
+    print("----------|----------|----------|----------|------------------")
     for r in rows:
         print(f"  {r['label']:<7} |  {pct(r['tar'])}  |  {pct(r['far'])}  |  {pct(r['frr'])}  | {r['note']}")
 
@@ -94,7 +96,17 @@ def main() -> None:
               + f"{100 * op.tar:.1f}%   (threshold = {op.threshold:.3f}){flag}")
     print(f"Smallest measurable FAR: {100 * res['smallest_nonzero']:.4f}%  (1/{impostor.size})")
     print(f"Reliable FAR floor:      {100 * res['reliable_floor']:.4f}%  (~10 errors needed)")
-    print(f"Recommended threshold: {eer.threshold:.3f}  (at EER)")
+    print(f"EER threshold:           {eer.threshold:.3f}")
+
+    # Production threshold: meet the target FAR if the data can resolve it,
+    # otherwise fall back to the EER point (the only statistically sound choice).
+    prod = tar_at_far(genuine, impostor, args.target_far)
+    if prod.resolvable:
+        print(f"Recommended threshold:   {prod.threshold:.3f}  (lowest threshold with FAR <= "
+              f"{100 * args.target_far:g}%; TAR = {100 * prod.tar:.1f}%, FRR = {100 * (1 - prod.tar):.1f}%)")
+    else:
+        print(f"Recommended threshold:   {eer.threshold:.3f}  (at EER — FAR {100 * args.target_far:g}% "
+              f"is below this dataset's resolution)")
 
     rows = threshold_table(genuine, impostor, args.thresholds, eer)
     print_table(rows)
@@ -109,6 +121,8 @@ def main() -> None:
         "eer_threshold": eer.threshold,
         "operating_points": [op.__dict__ for op in ops],
         "far_resolution": res,
+        "recommended": {"threshold": prod.threshold if prod.resolvable else eer.threshold,
+                        "basis": f"FAR <= {args.target_far}" if prod.resolvable else "EER"},
         "genuine_stats": {"mean": float(genuine.mean()), "std": float(genuine.std()),
                           "min": float(genuine.min()), "max": float(genuine.max())},
         "impostor_stats": {"mean": float(impostor.mean()), "std": float(impostor.std()),
