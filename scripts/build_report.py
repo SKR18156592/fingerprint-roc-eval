@@ -25,7 +25,7 @@ from reportlab.platypus import (
 )
 
 styles = getSampleStyleSheet()
-BODY = ParagraphStyle("body", parent=styles["BodyText"], fontSize=9.2, leading=12.2, spaceAfter=4)
+BODY = ParagraphStyle("body", parent=styles["BodyText"], fontSize=8.8, leading=11.4, spaceAfter=3)
 H1 = ParagraphStyle("h1", parent=styles["Heading1"], fontSize=15, spaceAfter=4, spaceBefore=0)
 H2 = ParagraphStyle("h2", parent=styles["Heading2"], fontSize=11.5, spaceBefore=7, spaceAfter=3)
 H3 = ParagraphStyle("h3", parent=styles["Heading3"], fontSize=10, spaceBefore=5, spaceAfter=2)
@@ -58,13 +58,16 @@ def table(lines: list[str], width: float) -> Table:
     return t
 
 
+MAX_IMAGE_HEIGHT = 5.4 * cm  # keeps figures from eating a whole page
+
+
 def image_row(images: list[tuple[str, str]], base: Path, width: float) -> Table:
     cells, caps = [], []
     w = width / len(images) - 0.2 * cm
     for caption, src in images:
         img = Image(str((base / src).resolve()))
-        img.drawHeight = img.drawHeight * w / img.drawWidth
-        img.drawWidth = w
+        scale = min(w / img.drawWidth, MAX_IMAGE_HEIGHT / img.drawHeight)
+        img.drawWidth, img.drawHeight = img.drawWidth * scale, img.drawHeight * scale
         cells.append(img)
         caps.append(Paragraph(inline(caption), CAPTION))
     return Table([cells, caps], colWidths=[width / len(images)] * len(images))
