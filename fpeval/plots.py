@@ -57,9 +57,14 @@ def plot_roc(roc: RocCurve, eer: EerResult, operating_points: list[OperatingPoin
     # Log-scale FAR is the standard way to read the low-FAR region that
     # matters for deployment; clip at the smallest strictly positive FAR.
     positive = far_pct[far_pct > 0]
+    x_min = max(positive.min() / 2, 1e-3) if positive.size else 1e-3
     ax.set_xscale("log")
-    ax.set_xlim(max(positive.min() / 2, 1e-3) if positive.size else 1e-3, 100)
-    ax.set_ylim(0, 101)
+    ax.set_xlim(x_min, 100)
+    # Zoom the y-axis onto the visible part of the curve; a strong matcher
+    # otherwise looks like a flat line glued to TAR = 100 %.
+    visible_tar = tar_pct[far_pct >= x_min]
+    y_min = np.floor((visible_tar.min() if visible_tar.size else 0) / 10) * 10 - 5
+    ax.set_ylim(max(y_min, 0), 100.5)
     ax.set_xlabel("False Accept Rate — FAR (%)  [log scale]")
     ax.set_ylabel("True Accept Rate — TAR (%)")
     ax.set_title("ROC Curve — Fingerprint Matching")
