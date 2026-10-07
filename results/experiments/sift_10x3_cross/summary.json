@@ -1,0 +1,120 @@
+{
+  "n_genuine": 30,
+  "n_impostor": 405,
+  "eer": 0.0,
+  "eer_threshold": 0.439946,
+  "operating_points": [
+    {
+      "target_far": 0.01,
+      "tar": 1.0,
+      "far": 0.004938271604938316,
+      "threshold": 0.230769,
+      "resolvable": true
+    },
+    {
+      "target_far": 0.001,
+      "tar": 1.0,
+      "far": 0.0,
+      "threshold": 0.649123,
+      "resolvable": false
+    },
+    {
+      "target_far": 0.0001,
+      "tar": 1.0,
+      "far": 0.0,
+      "threshold": 0.649123,
+      "resolvable": false
+    }
+  ],
+  "far_resolution": {
+    "smallest_nonzero": 0.0024691358024691358,
+    "rule_of_three_95": 0.007407407407407408,
+    "reliable_floor": 0.024691358024691357
+  },
+  "recommended": {
+    "threshold": 0.439946,
+    "basis": "EER"
+  },
+  "genuine_stats": {
+    "mean": 0.8843966999999999,
+    "std": 0.06789912954284956,
+    "min": 0.649123,
+    "max": 0.95098
+  },
+  "impostor_stats": {
+    "mean": 0.03671048641975309,
+    "std": 0.06418206407060617,
+    "min": 0.0,
+    "max": 0.230769
+  },
+  "overlap": {
+    "genuine_below_max_impostor": 0.0,
+    "impostor_above_min_genuine": 0.0
+  },
+  "threshold_table": [
+    {
+      "label": "0.20",
+      "threshold": 0.2,
+      "tar": 1.0,
+      "far": 0.03209876543209877,
+      "frr": 0.0,
+      "note": ""
+    },
+    {
+      "label": "0.30",
+      "threshold": 0.3,
+      "tar": 1.0,
+      "far": 0.0,
+      "frr": 0.0,
+      "note": ""
+    },
+    {
+      "label": "0.40",
+      "threshold": 0.4,
+      "tar": 1.0,
+      "far": 0.0,
+      "frr": 0.0,
+      "note": "(hand-picked baseline)"
+    },
+    {
+      "label": "EER pt",
+      "threshold": 0.439946,
+      "tar": 1.0,
+      "far": 0.0,
+      "frr": 0.0,
+      "note": "<- EER (t = 0.440)"
+    },
+    {
+      "label": "0.50",
+      "threshold": 0.5,
+      "tar": 1.0,
+      "far": 0.0,
+      "frr": 0.0,
+      "note": ""
+    },
+    {
+      "label": "0.60",
+      "threshold": 0.6,
+      "tar": 1.0,
+      "far": 0.0,
+      "frr": 0.0,
+      "note": ""
+    },
+    {
+      "label": "0.70",
+      "threshold": 0.7,
+      "tar": 0.9666666666666667,
+      "far": 0.0,
+      "frr": 0.03333333333333333,
+      "note": ""
+    },
+    {
+      "label": "0.80",
+      "threshold": 0.8,
+      "tar": 0.9333333333333333,
+      "far": 0.0,
+      "frr": 0.06666666666666667,
+      "note": ""
+    }
+  ]
+}
