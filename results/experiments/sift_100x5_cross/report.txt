@@ -1,0 +1,25 @@
+=== ROC Analysis Results ===
+Matcher:              SIFT keypoints (masked, CLAHE-enhanced) + Lowe ratio test (0.8) + RANSAC similarity-transform verification (8.0px); score = inliers / (inliers + 20)
+Genuine pairs:        1000
+Impostor pairs:       123750
+EER:                  0.11%   (threshold = 0.476)
+TAR @ FAR = 1%:       100.0%   (threshold = 0.259)
+TAR @ FAR = 0.1%:     99.7%   (threshold = 0.500)
+TAR @ FAR = 0.01%:    96.7%   (threshold = 0.643)
+Smallest measurable FAR: 0.0008%  (1/123750)
+Reliable FAR floor:      0.0081%  (~10 errors needed)
+EER threshold:           0.476
+Recommended threshold:   0.643  (lowest threshold with FAR <= 0.01%; TAR = 96.7%, FRR = 3.3%)
+
+Threshold | TAR (%)  | FAR (%)  | FRR (%)  | Notes
+----------|----------|----------|----------|------------------
+  0.20    |  100.00  |    3.81  |    0.00  | 
+  0.30    |  100.00  |    0.42  |    0.00  | 
+  0.40    |  100.00  |    0.19  |    0.00  | (hand-picked baseline)
+  EER pt  |   99.80  |    0.10  |    0.20  | <- EER (t = 0.476)
+  0.50    |   99.70  |    0.09  |    0.30  | 
+  0.60    |   98.40  |    0.02  |    1.60  | 
+  0.70    |   92.70  |    0.00  |    7.30  | 
+  0.80    |   81.80  |    0.00  |   18.20  | 
+
+Saved plots + summary.json -> results/experiments/sift_100x5_cross/
