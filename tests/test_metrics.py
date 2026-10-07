@@ -39,6 +39,12 @@ def test_perfect_separation_has_zero_eer():
     assert 0.3 <= res.threshold <= 0.8
 
 
+def test_perfect_separation_threshold_is_mid_gap():
+    # Max-margin choice: halfway between best impostor and worst genuine.
+    res = equal_error_rate([0.8, 0.9], [0.1, 0.4])
+    assert res.threshold == pytest.approx(0.6)
+
+
 def test_eer_matches_known_overlap():
     # One genuine below and one impostor above the crossing -> EER = 1/4.
     res = equal_error_rate([0.9, 0.8, 0.7, 0.35], [0.1, 0.2, 0.3, 0.75])
