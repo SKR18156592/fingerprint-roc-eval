@@ -1,5 +1,7 @@
 # Fingerprint Matching — Genuine/Impostor Score Collection & ROC Analysis
 
+[![tests](https://github.com/SKR18156592/fingerprint-roc-eval/actions/workflows/tests.yml/badge.svg)](https://github.com/SKR18156592/fingerprint-roc-eval/actions/workflows/tests.yml)
+
 An evaluation pipeline for fingerprint verification. It collects **genuine**
 (same finger) and **impostor** (different fingers) match scores, builds the
 **ROC curve**, and **derives the decision threshold from data**, not from a
