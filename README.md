@@ -22,7 +22,22 @@ hand-picked constant.
 
 > These numbers come from synthetic re-captures of a single impression per finger, so they
 > are optimistic. See [Limitations](#limitations) and the full write-up in
-> [`docs/report.md`](docs/report.md).
+> [`docs/report.md`](docs/report.md) ([PDF](docs/report.pdf)).
+
+## Experiments
+
+| Experiment | Genuine | Impostor | EER (%) | TAR@1% | TAR@0.1% | TAR@0.01% | Min. FAR (%) |
+|---|---|---|---|---|---|---|---|
+| **SIFT, 100×5, cross (main)** | 1000 | 123750 | **0.11** | 100.0 | 99.7 | 96.7 | 0.0008 |
+| ORB, 100×5, cross | 1000 | 123750 | 1.09 | 98.8 | 93.2 | 78.8 | 0.0008 |
+| SIFT, 100×5, raw SOCOFing (no variation) | 1000 | 123750 | 0.00 | 100.0 | 100.0 | 100.0 | 0.0008 |
+| SIFT, 10×3, cross | 30 | 405 | 0.00 | 100.0 | 100.0 † | 100.0 † | 0.2469 |
+| SIFT, 10×3, reference | 30 | 45 | 0.00 | 100.0 † | 100.0 † | 100.0 † | 2.2222 |
+
+† The target FAR is below 1/#impostor, so it can't be measured on that set.
+Reproduce with `scripts/run_experiments.sh`.
+
+![ROC comparison](docs/figures/roc_comparison.png)
 
 ---
 
